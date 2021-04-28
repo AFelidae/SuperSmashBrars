@@ -3,7 +3,7 @@ from character import Character
 class Sara(Character):
     def __init__(self):
         super().__init__("Sara", title="Saraline Hooey", hp=1600, attack=150, dodge=20, crit=15, defense=10,
-                         gender=1)
+                         gender=1, critValue=2)
         self.srec = 3
         self.sccount = 0
 

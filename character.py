@@ -3,7 +3,7 @@ import random
 
 class Character(object):
     # self.properties = {name : None, hp : None, attack : None, dodge : None, crit : None, defense : None, gender : None}
-    def __init__(self, name, title, hp, attack, dodge, crit, defense, gender):
+    def __init__(self, name, title, hp, attack, dodge, crit, defense, gender, critValue):
         self.name = name
         self.title = title
         self.hp = hp
@@ -13,6 +13,7 @@ class Character(object):
         self.defense = defense
         self.gender = gender
         self.resource = 0
+        self.critValue = critValue
         
         self.doescrit = 1
         self.doesdodge = 0
@@ -29,7 +30,8 @@ class Character(object):
                         'attack' :    {"selfmult" : 1, "othermult" : 1, "selfadd" : 0, "otheradd" : 0},
                         'dodge' :     {"selfmult" : 1, "othermult" : 1, "selfadd" : 0, "otheradd" : 0}, 
                         'crit' :      {"selfmult" : 1, "othermult" : 1, "selfadd" : 0, "otheradd" : 0},
-                        'defense' :   {"selfmult" : 1, "othermult" : 1, "selfadd" : 0, "otheradd" : 0}}
+                        'defense' :   {"selfmult" : 1, "othermult" : 1, "selfadd" : 0, "otheradd" : 0},
+                        'critValue' : {"selfmult" : 1, "othermult" : 1, "selfadd" : 0, "otheradd" : 0}}
                         
         """
         actualattack = attack * modifiers[attack][selfmult] * modifiers[attack][othermult] + modifiers[attack][selfadd]+ modifiers[attack][otheradd]
@@ -65,6 +67,9 @@ class Character(object):
     def testdodged(self):
         self.doesdodge = 1 if random.uniform(1, 100) > self.getActualDODGE() else 0
 
+    def testcrit(self):
+        self.doescrit = self.critValue if random.uniform(1, 100) < self.getActualCRIT() else 1
+
     def damage(self, opponentattack, critmult):
         damage = None
         dodgemult = self.dodged()
@@ -93,6 +98,9 @@ class Character(object):
         
     def getActualDEF(self):
         return (self.defense + self.modifiers['defense']['selfadd'] + self.modifiers['defense']['otheradd']) * self.modifiers['defense']['selfmult'] * self.modifiers['defense']['othermult'] 
+
+    def getHP(self):
+        return (self.hp + self.modifiers['hp']['selfadd'] + self.modifiers['hp']['otheradd']) * self.modifiers['hp']['selfmult'] * self.modifiers['hp']['othermult']
 
     def endround(self):
         self.resource += 1

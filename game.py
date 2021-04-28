@@ -10,7 +10,9 @@ from People.sara import Sara
 from People.peter import Peter
 from People.phillip import Phillip
 from People.romir import Romir
-
+from People.emily import Emily
+from People.rahul import Rahul
+from People.jessica import Jessica
 
 # Disable
 def blockPrint():
@@ -34,10 +36,11 @@ class Fight(object):
         self.p1.enemy = self.p2
         self.run()
 
+
+
     # make universally probably
     def damage(self, attacker, victim):
         damage = None
-        victim.testdodged()
 
         actualattack = attacker.getActualATK()
         actualdodge = victim.getActualDODGE()
@@ -46,7 +49,6 @@ class Fight(object):
 
         print(
             "Atk = {}\nDodge = {}\nCrit = {}\nDef = {}\n".format(actualattack, actualdodge, actualcrit, actualdefense))
-        attacker.doescrit = 2 if random.uniform(1, 100) < actualcrit else 1
 
         if actualdefense > 0:
             damage = victim.doesdodge * (max(0, attacker.doescrit * actualattack - actualdefense))
@@ -75,16 +77,24 @@ class Fight(object):
             print("TURN {}".format(self.turn))
             print("{}'s Resource count: {}".format(self.p1.name, self.p1.resource))
             print("{}'s Resource count: {}".format(self.p2.name, self.p2.resource))
-            print("Player 1 ({}) HP: {}".format(self.p1.name, self.p1.hp))
-            print("Player 2 ({}) HP: {}".format(self.p2.name, self.p2.hp))
+            print("Player 1 ({}) HP: {}".format(self.p1.name, self.p1.getHP()))
+            print("Player 2 ({}) HP: {}".format(self.p2.name, self.p2.getHP()))
 
-            if self.p2.hp < 0:
+            if self.p2.getHP() < 0:
                 lose = self.p2
                 break
 
-            if self.p1.hp < 0:
+            if self.p1.getHP() < 0:
                 lose = self.p1
                 break
+            self.p1.testdodged()
+            self.p2.testdodged()
+            self.p1.testcrit()
+            self.p2.testcrit()
+
+            #start passives 
+            self.p1.passive()
+            self.p2.passive()
 
             # for normal mode simulation
             if self.output:
@@ -95,11 +105,6 @@ class Fight(object):
             else:
                 p1c = 's'
                 p2c = 's'
-
-            # start passives
-
-            self.p1.passive()
-            self.p2.passive()
 
             if p1c.lower() == "s":
                 if self.p1.resource >= self.p1.srec:
@@ -147,8 +152,8 @@ class Fight(object):
 
             # end passives
 
-            # self.p1.passiveend()
-            # self.p2.passiveend()
+            self.p1.passiveend()
+            self.p2.passiveend()
 
             # This function should be removed
             # self.p1.specialend()
@@ -166,5 +171,5 @@ class Fight(object):
         return lose.name
 
 if __name__ == "__main__":                   
-    game = Fight(Romir(), Arvin(), True)
+    game = Fight(Jessica(), Arvin(), True)
 

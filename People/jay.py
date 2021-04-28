@@ -6,7 +6,7 @@ class Jay(Character):
     hitself = False
 
     def __init__(self):
-        super().__init__("Jay", title="GayJay47", hp=3800, attack=280, dodge=0, crit=10, defense=50, gender=0)
+        super().__init__("Jay", title="GayJay47", hp=3800, attack=280, dodge=0, crit=10, defense=50, gender=0, critValue=2)
         self.srec = 11
 
     def passive(self):

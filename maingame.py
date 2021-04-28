@@ -10,6 +10,8 @@ from People.sara import Sara
 from People.peter import Peter
 from People.phillip import Phillip
 from People.romir import Romir
+from People.emily import Emily
+from People.rahul import Rahul
 
 
 # Disable
@@ -45,6 +47,7 @@ class Fight(object):
     def damage(self, attacker, victim):
         damage = None
         victim.testdodged()
+        attacker.testcrit()
 
         actualattack = attacker.getActualATK()
         actualdodge = victim.getActualDODGE()
@@ -53,7 +56,6 @@ class Fight(object):
 
         print(
             "Atk = {}\nDodge = {}\nCrit = {}\nDef = {}\n".format(actualattack, actualdodge, actualcrit, actualdefense))
-        attacker.doescrit = 2 if random.uniform(1, 100) < actualcrit else 1
 
         if actualdefense > 0:
             damage = victim.doesdodge * (max(0, attacker.doescrit * actualattack - actualdefense))
@@ -127,7 +129,11 @@ class Fight(object):
             print("Player 1 ({}) HP: {}".format(self.p1.name, self.p1.hp))
             print("Player 2 ({}) HP: {}".format(self.p2.name, self.p2.hp))
 
-           
+            # start passives
+
+            self.p1.passive()
+            self.p2.passive()
+
             #prompt move
             print(self.teams["team1"])
             p1c = input("{}: Select your move ({})".format(self.p1.name,
@@ -145,10 +151,6 @@ class Fight(object):
                 p2c = input("{}: Can't Swap to Same Character! Select your move ({})".format(self.p2.name,
                                                            "a, s, d#" if self.p2.resource >= self.p2.srec else "a, d#"))
 
-            # start passives
-
-            self.p1.passive()
-            self.p2.passive()
             
             
             #swaps
@@ -228,7 +230,9 @@ class Fight(object):
             if fuck == 2:
                 print("Player 2 wins")
                 break
-                
+
+            self.p1.passiveend()
+            self.p2.passiveend()
 
             self.p1.endround()
             self.p2.endround()
@@ -242,8 +246,8 @@ class Fight(object):
         #return lose.name
 
 if __name__ == "__main__":
-    teams = {   "team1" : [Phillip()],
-                "team2" : [Arvin(), Jay()]}
+    teams = {   "team1" : [Phillip(), Jiyang(), Sara()],
+                "team2" : [Sean(), Rahul(), Arvin()]}
                 
     coinflip = random.randint(0, 1)
     if coinflip == 0:

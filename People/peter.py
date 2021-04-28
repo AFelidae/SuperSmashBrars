@@ -4,7 +4,7 @@ import random
 class Peter(Character):
     def __init__(self):
         super().__init__("Peter", title="Thicc Booty", hp=2500, attack=180, dodge=15, crit=15, defense=5,
-                         gender=0)
+                         gender=0, critValue=2)
         self.srec = 0
 
     def passive(self):
