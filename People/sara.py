@@ -2,18 +2,25 @@ from character import Character
 
 class Sara(Character):
     def __init__(self):
-        super().__init__("Sara", title="Saraline Hooey", hp=1600, attack=150, dodge=20, crit=15, defense=10,
+        super().__init__("Sara", title="Saraline Hooey", hp=1600, attack=150, dodge=20, crit=10, defense=10,
                          gender=1, critValue=2)
         self.srec = 3
-        self.sccount = 0
+        self.scount = 0
+        self.scenemy = " "
 
     def passive(self):      
-        self.modifiers['crit']['selfadd'] += 5
+        if self.enemy.title == "The Aloof Alpha Male":
+            self.modifiers['crit']['selfadd'] += 2.5
+        else:
+            self.modifiers['crit']['selfadd'] += 5
                  
     
     def special(self):
-        self.enemy.modifiers['defense']['otheradd'] += -110
+        self.enemy.modifiers['defense']['otheradd'] -= 110
+        self.scount = 5
+        self.scenemy = self.enemy.title
         self.resource -= self.srec
+        self.srec += 2
     
     
     """
@@ -23,18 +30,10 @@ class Sara(Character):
     
     """
     def endround(self):
-        
-        if self.isSpecial:
-            self.sccount = 4
-        
-        if self.sccount > 0:
-        
-            self.enemy.modifiers['defense']['otheradd'] -= -20
-            self.sccount -= 1
-            
-            if self.sccount == 1:
-                self.enemy.modifiers['defense']['otheradd'] -= -40
-                self.sccount = 0
+        if self.scount > 0 and self.enemy.title == self.scenemy:
+            self.enemy.modifiers['defense']['otheradd'] += 20
+            self.scount -= 1
+
                 
                 
         

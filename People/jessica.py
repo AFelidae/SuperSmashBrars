@@ -3,7 +3,7 @@ from character import Character
 
 class Jessica(Character):
     def __init__(self):
-        super().__init__("Jessica", title="Fisiks Queen", hp=2300, attack=140, dodge=20, crit=10, defense=10,
+        super().__init__("Jessica", title="Fisiks Queen", hp=2000, attack=130, dodge=20, crit=10, defense=10,
                          gender=1, critValue=2)
         self.srec = 0
 
@@ -13,7 +13,7 @@ class Jessica(Character):
         self.modifiers['dodge']['selfadd'] = 5*self.resource
 
     def special(self):
-        self.enemy.hp -= 50*self.resource
+        self.enemy.hp -= 40*self.resource
         self.resource = 0
 
     def endround(self):

@@ -13,6 +13,10 @@ from People.romir import Romir
 from People.emily import Emily
 from People.rahul import Rahul
 from People.jessica import Jessica
+from People.kyle import Kyle
+from People.yash import Yash
+from People.jeanell import Jeanell
+#from People.arvin import Hat
 
 # Disable
 def blockPrint():
@@ -79,14 +83,20 @@ class Fight(object):
             print("{}'s Resource count: {}".format(self.p2.name, self.p2.resource))
             print("Player 1 ({}) HP: {}".format(self.p1.name, self.p1.getHP()))
             print("Player 2 ({}) HP: {}".format(self.p2.name, self.p2.getHP()))
-
-            if self.p2.getHP() < 0:
+ 
+            # death checks
+            if self.p2.getHP() <= 0:
                 lose = self.p2
                 break
 
-            if self.p1.getHP() < 0:
+            if self.p1.getHP() <= 0:
                 lose = self.p1
                 break
+
+            self.p1.startround()
+            self.p2.startround()
+
+            # test to see if player will dodge and/or crit
             self.p1.testdodged()
             self.p2.testdodged()
             self.p1.testcrit()
@@ -105,16 +115,24 @@ class Fight(object):
             else:
                 p1c = 's'
                 p2c = 's'
+                if self.p1.title == "Fisiks Queen":
+                    p1c = 'a'
+                if self.p2.title == "Fisiks Queen":
+                    p2c = 'a'
 
-            if p1c.lower() == "s":
+            if p1c.lower() == "s" and not self.p1.isParalyzed:
                 if self.p1.resource >= self.p1.srec:
                     self.p1.isSpecial = True
                     self.p1.special()
 
-            if p2c.lower() == "s":
+            if p2c.lower() == "s" and not self.p2.isParalyzed:
                 if self.p2.resource >= self.p2.srec:
                     self.p2.isSpecial = True
                     self.p2.special()
+
+
+            self.p1.midround()
+            self.p2.midround()
             # p1 attacks p2
             """
             print("({}) attacks ({})".format(self.p1.name, self.p2.name))
@@ -128,27 +146,26 @@ class Fight(object):
             p2.doescrit = 2 if random.uniform(1, 100) < self.p2.crit else 1
             self.p1.damage(self.p2.attack, doescrit)
             """
-            print("({}) attacks ({})".format(self.p1.name, self.p2.name))
-            self.damage(self.p1, self.p2)
+            if not self.p1.isParalyzed:
+                print("({}) attacks ({})".format(self.p1.name, self.p2.name))
+                self.damage(self.p1, self.p2)
 
             # p2 attacks p1
-            print("({}) attacks ({})".format(self.p2.name, self.p1.name))
-            self.damage(self.p2, self.p1)
+            if not self.p2.isParalyzed:
+                print("({}) attacks ({})".format(self.p2.name, self.p1.name))
+                self.damage(self.p2, self.p1)
+
+
+            if self.p1.isParalyzed:
+                print("({}) is Paralyzed and can't move".format(self.p1.name))
+            if self.p2.isParalyzed:
+                print("({}) is Paralyzed and can't move".format(self.p2.name))
 
             print("MODIFIERS")
             print(self.p1.modifiers)
             print(self.p2.modifiers)
             print("-----------------------------------")
 
-            # death checks
-
-            if self.p2.hp < 0:
-                lose = self.p2
-                break
-
-            if self.p1.hp < 0:
-                lose = self.p1
-                break
 
             # end passives
 
@@ -171,5 +188,5 @@ class Fight(object):
         return lose.name
 
 if __name__ == "__main__":                   
-    game = Fight(Jessica(), Arvin(), True)
+    game = Fight(Jessica(), Romir(), True)
 

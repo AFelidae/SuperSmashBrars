@@ -22,6 +22,10 @@ class Character(object):
         
         self.enemy = None
         self.team = None
+
+        self.isParalyzed = False
+        self.isSimping = False
+        self.forceSwapped = False
         
         
         self.isSpecial = False
@@ -42,7 +46,12 @@ class Character(object):
         
     def __str__(self):
         return("{}({})".format(self.name, self.hp))
-        
+
+    def startround(self):
+        pass
+
+    def midround(self):
+        pass
         
     def passive(self):
         pass
@@ -60,7 +69,8 @@ class Character(object):
         pass
         
     def onDeath(self):
-        print("{} died!".format(self.name))
+        if self.getHP() <= 0:
+            return True
         
         
 
@@ -104,8 +114,6 @@ class Character(object):
 
     def endround(self):
         self.resource += 1
-        self.doescrit = 1
-        self.doesdodge = 0
         self.swappedin = False
         
         if self.isSpecial:

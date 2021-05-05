@@ -12,6 +12,12 @@ from People.phillip import Phillip
 from People.romir import Romir
 from People.emily import Emily
 from People.rahul import Rahul
+from People.jessica import Jessica
+from People.kyle import Kyle
+from People.yash import Yash
+from People.jeanell import Jeanell
+#from People.arvin import Hat
+
 
 
 # Disable
@@ -46,8 +52,6 @@ class Fight(object):
     # make universally probably
     def damage(self, attacker, victim):
         damage = None
-        victim.testdodged()
-        attacker.testcrit()
 
         actualattack = attacker.getActualATK()
         actualdodge = victim.getActualDODGE()
@@ -129,6 +133,25 @@ class Fight(object):
             print("Player 1 ({}) HP: {}".format(self.p1.name, self.p1.hp))
             print("Player 2 ({}) HP: {}".format(self.p2.name, self.p2.hp))
 
+            # check for deaths
+
+            fuck = self.deathcheck()
+            
+            if fuck == 1:
+                print("Player 1 wins")
+                break
+                
+            if fuck == 2:
+                print("Player 2 wins")
+                break
+
+            #test if players will dodge or crit
+
+            self.p1.testdodged()
+            self.p2.testdodged()
+            self.p1.testcrit()
+            self.p2.testcrit()
+
             # start passives
 
             self.p1.passive()
@@ -156,7 +179,7 @@ class Fight(object):
             #swaps
             
             
-            if p1c.lower()[0] == "d":
+            if p1c.lower()[0] == "d" and not self.p1.isParalyzed:
                 choice = int(p1c.lower()[1])
                 
                 self.p1.onSwapOut()
@@ -166,7 +189,7 @@ class Fight(object):
                 print("player 1 swaps")
                     
           
-            if p2c.lower()[0] == "d":
+            if p2c.lower()[0] == "d" and not self.p2.isParalyzed:
                 choice = int(p2c.lower()[1])
                 
                 self.p2.onSwapOut()
@@ -181,15 +204,43 @@ class Fight(object):
             self.p1.enemy = self.p2
             
             # specials
-            if p1c.lower() == "s":
+            if p1c.lower() == "s" and not self.p1.isParalyzed:
                 if self.p1.resource >= self.p1.srec:
                     self.p1.isSpecial = True
                     self.p1.special()
 
-            if p2c.lower() == "s":
+            if p2c.lower() == "s" and not self.p2.isParalyzed:
                 if self.p2.resource >= self.p2.srec:
                     self.p2.isSpecial = True
                     self.p2.special()
+
+
+            self.p1.midround()
+            self.p2.midround()
+
+            # force swaps
+            if self.p1.forceSwapped:
+                p2mc = int(input("p2 choose who p1 the opponent should swap too: "))
+                while p2mc-1 == self.teams["team1"].index(self.p1) or p2mc-1 not in range(1, len(self.teams["team1"])):
+                    p2mc = int(input("p2 cannot force player to swap to themselves or to someone not there. Choose someone else to swap to: "))
+                self.p1.forceSwapped = False
+                self.p1.onSwapOut()
+                self.p1 = self.teams["team1"][p2mc-1]
+                self.p1.swappedin = True
+                self.p1.onSwapIn()
+                print("player 1 is forced to swap")
+
+            if self.p2.forceSwapped:
+                p1mc = int(input("p1 choose who p2 the opponent should swap too: "))
+                while p1mc-1 == self.teams["team2"].index(self.p2) or p1mc-1 not in range(1, len(self.teams["team2"])):
+                    p1mc = int(input("p2 cannot force player to swap to themselves or to someone not there. Choose someone else to swap to: "))
+                self.p2.forceSwapped = False
+                self.p2.onSwapOut()
+                self.p2 = self.teams["team2"][p1mc-1]
+                self.p2.swappedin = True
+                self.p2.onSwapIn()
+                print("player 2 is forced to swap")
+
                     
             # p1 attacks p2
             """
@@ -204,32 +255,27 @@ class Fight(object):
             p2.doescrit = 2 if random.uniform(1, 100) < self.p2.crit else 1
             self.p1.damage(self.p2.attack, doescrit)
             """
-            
-            if not self.p1.swappedin:
+            # p1 attacks p2
+            if not self.p1.swappedin and not self.p1.isParalyzed:
                 print("({}) attacks ({})".format(self.p1.name, self.p2.name))
                 self.damage(self.p1, self.p2)
 
             # p2 attacks p1
-            if not self.p2.swappedin:
+            if not self.p2.swappedin and not self.p2.isParalyzed:
                 print("({}) attacks ({})".format(self.p2.name, self.p1.name))
                 self.damage(self.p2, self.p1)
+
+            # If p1 or p2 is paralyzed
+            if self.p1.isParalyzed:
+                print("({}) is Paralyzed and can't move".format(self.p1.name))
+            if self.p1.isParalyzed:
+                print("({}) is Paralyzed and can't move".format(self.p1.name))
 
             print("MODIFIERS")
             print(self.p1.modifiers)
             print(self.p2.modifiers)
             print("-----------------------------------")
 
-            # death checks
-
-            fuck = self.deathcheck()
-            
-            if fuck == 1:
-                print("Player 1 wins")
-                break
-                
-            if fuck == 2:
-                print("Player 2 wins")
-                break
 
             self.p1.passiveend()
             self.p2.passiveend()
@@ -246,8 +292,8 @@ class Fight(object):
         #return lose.name
 
 if __name__ == "__main__":
-    teams = {   "team1" : [Phillip(), Jiyang(), Sara()],
-                "team2" : [Sean(), Rahul(), Arvin()]}
+    teams = {   "team1" : [Phillip(), Jiyang(), Peter()],
+                "team2" : [Sean(), Jay(), Arvin()]}
                 
     coinflip = random.randint(0, 1)
     if coinflip == 0:

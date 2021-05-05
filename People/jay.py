@@ -6,7 +6,7 @@ class Jay(Character):
     hitself = False
 
     def __init__(self):
-        super().__init__("Jay", title="GayJay47", hp=3800, attack=280, dodge=0, crit=10, defense=50, gender=0, critValue=2)
+        super().__init__("Jay", title="GayJay47", hp=3100, attack=280, dodge=0, crit=10, defense=50, gender=0, critValue=2)
         self.srec = 11
 
     def passive(self):
@@ -30,15 +30,15 @@ class Jay(Character):
         self.modifiers['defense']['selfadd'] = -100
         
         self.enemy.modifiers['dodge']['othermult'] = 0
+        self.doesdodge = 1
+        self.doescrit = self.critValue
       
         self.resource -= self.srec
         #return "undodgeable"
         
 
     def endround(self):
-        
-        self.selfhit += 3
-
+        self.selfhit += 2
         if self.hitself:
             self.passiveend()
             self.hitself = False
