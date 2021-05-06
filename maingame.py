@@ -166,7 +166,7 @@ class MainFight(object):
             p1c = input("{}: Select your move ({})".format(self.p1.name,
                                                            "a, s, d#" if self.p1.resource >= self.p1.srec else "a, d#"))
            
-            while p1c.lower()[0] == "d" and (int(p1c.lower()[1])-1 == self.teams["team1"].index(self.p1) or int(p1c.lower()[1])-1 not in range(1, len(self.teams["team1"]))):
+            while p1c.lower()[0] == "d" and (int(p1c.lower()[1])-1 == self.teams["team1"].index(self.p1) or int(p1c.lower()[1])-1 not in range(len(self.teams["team1"]))):
                 p1c = input("{}: Can't Swap to Same Character! Select your move ({})".format(self.p1.name,
                                                            "a, s, d#" if self.p1.resource >= self.p1.srec else "a, d#"))
                                                            
@@ -174,7 +174,7 @@ class MainFight(object):
             p2c = input("{}: Select your move ({})".format(self.p2.name,
                                                            "a, s, d#" if self.p2.resource >= self.p2.srec else "a, d#"))
                                                            
-            while p2c.lower()[0] == "d" and (int(p2c.lower()[1])-1 == self.teams["team2"].index(self.p2) or int(p2c.lower()[1])-1 not in range(1, len(self.teams["team2"]))):
+            while p2c.lower()[0] == "d" and (int(p2c.lower()[1])-1 == self.teams["team2"].index(self.p2) or int(p2c.lower()[1])-1 not in range(len(self.teams["team2"]))):
                 p2c = input("{}: Can't Swap to Same Character! Select your move ({})".format(self.p2.name,
                                                            "a, s, d#" if self.p2.resource >= self.p2.srec else "a, d#"))
 
@@ -225,7 +225,7 @@ class MainFight(object):
             # force swaps
             if self.p1.forceSwapped:
                 p2mc = int(input("p2 choose who p1 the opponent should swap too: "))
-                while p2mc-1 == self.teams["team1"].index(self.p1) or p2mc-1 not in range(1, len(self.teams["team1"])):
+                while p2mc-1 == self.teams["team1"].index(self.p1) or p2mc-1 not in range(len(self.teams["team1"])):
                     p2mc = int(input("p2 cannot force player to swap to themselves or to someone not there. Choose someone else to swap to: "))
                 self.p1.forceSwapped = False
                 self.p1.onSwapOut()
@@ -236,7 +236,7 @@ class MainFight(object):
 
             if self.p2.forceSwapped:
                 p1mc = int(input("p1 choose who p2 the opponent should swap too: "))
-                while p1mc-1 == self.teams["team2"].index(self.p2) or p1mc-1 not in range(1, len(self.teams["team2"])):
+                while p1mc-1 == self.teams["team2"].index(self.p2) or p1mc-1 not in range(len(self.teams["team2"])):
                     p1mc = int(input("p2 cannot force player to swap to themselves or to someone not there. Choose someone else to swap to: "))
                 self.p2.forceSwapped = False
                 self.p2.onSwapOut()
