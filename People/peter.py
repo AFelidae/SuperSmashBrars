@@ -9,8 +9,6 @@ class Peter(Character):
 
     def passive(self):
         pass
-        
-    
     
     def special(self):
         for i in self.enemy.team:
@@ -31,9 +29,5 @@ class Peter(Character):
         
         if self.doesdodge != 1:
             self.resource += 3  
-            
-            
-            
+
         super().endround()
-        
-        

@@ -22,7 +22,7 @@ class Arvin(Character):
 
     def endround(self):
         super().endround()
-
+"""
 class Arvin2(Character):
     def __init__(self):
         super().__init__("Hat", title="TBA", hp=1500, attack=200, dodge=10, crit=10, defense=20,
@@ -88,26 +88,4 @@ class Arvin2(Character):
             self.modifiers['attack']['selfmult'] = 1
             self.enterFirstShift = False
         super().endround()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+"""

@@ -21,8 +21,7 @@ class Sara(Character):
         self.scenemy = self.enemy.title
         self.resource -= self.srec
         self.srec += 2
-    
-    
+
     """
     def onswap(self):
         self.modifiers['crit']['selfadd'] = 0
@@ -34,14 +33,8 @@ class Sara(Character):
             self.enemy.modifiers['defense']['otheradd'] += 20
             self.scount -= 1
 
-                
-                
-        
         """
         if self.isSpecial:
             self.enemy.modifiers['defense']['otheradd'] -= -100
         """
         super().endround()
-        
-       
-       

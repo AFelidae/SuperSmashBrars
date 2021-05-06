@@ -6,16 +6,14 @@ class Romir(Character):
                          gender=0, critValue=2)
         self.srec = 0
         self.canRespawn = True
-   
-    
+
     def passive(self):
         self.modifiers['attack']['selfadd'] = 10*self.resource
         self.modifiers['defense']['selfadd'] = 5*self.resource
         
     def special(self):
         pass
-                  
-    
+
     def endround(self): 
         if self.canRespawn and self.getHP() < 0:
             self.hp = 1200
@@ -23,5 +21,3 @@ class Romir(Character):
             print("THE PIMP RETURNS! {} respawned".format(self.name))
             self.canRespawn = False           
         super().endround()
-        
-        

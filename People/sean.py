@@ -26,5 +26,3 @@ class Sean(Character):
             self.modifiers['crit']['selfmult'] = 1
             
         super().endround()
-        
-        

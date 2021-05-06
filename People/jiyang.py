@@ -27,6 +27,3 @@ class Jiyang(Character):
         if random.randint(1, 6) == 1:
             print("We may be equal, but some are more equal than others")
             self.enemy.hp = self.hp
-            
-  
-        

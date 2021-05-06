@@ -25,11 +25,6 @@ class Phillip(Character):
             self.modifiers['dodge']['selfmult'] = 0.8
         else:
             self.modifiers['dodge']['selfmult'] = 1
-
-        
-        
-        
-    
     
     def special(self):
         pass
@@ -39,5 +34,3 @@ class Phillip(Character):
             self.specialKill = True
         buff = 0
         super().endround()
-        
-        

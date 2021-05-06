@@ -15,7 +15,6 @@ class Rahul(Character):
     def special(self):
         pass
 
-
     def midround(self):
         if self.isSpecial:
             for stats, mods in self.enemy.modifiers.items():
@@ -23,7 +22,6 @@ class Rahul(Character):
                     if values > 1:
                         self.enemy.modifiers[stats][key] = 1 if "mult" in key else 0
             self.resource -= self.srec
-
 
     def passiveend(self):
         if self.doescrit > 1 and self.srec < 4:
@@ -33,5 +31,3 @@ class Rahul(Character):
 
     def endround(self):
         super().endround()
-
-            

@@ -50,5 +50,3 @@ class Jay(Character):
             self.enemy.modifiers['dodge']['othermult'] = 1
             
         super().endround()
-            
-            
