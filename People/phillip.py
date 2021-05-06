@@ -15,6 +15,7 @@ class Phillip(Character):
             self.specialKill = False
         
         for p in self.team:
+            print("furry shift")
             if p.gender == 1:
                 self.buff += 1
         self.modifiers['attack']['selfadd'] = self.buff*50
@@ -36,6 +37,7 @@ class Phillip(Character):
     def endround(self):
         if self.isSpecial and self.enemy.onDeath():
             self.specialKill = True
+        buff = 0
         super().endround()
         
         
