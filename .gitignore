@@ -4,3 +4,5 @@
 venv
 #complied pythonc files
 **.pyc
+#idek where it comes from
+/.DS_Store

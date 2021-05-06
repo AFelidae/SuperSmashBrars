@@ -1,8 +1,7 @@
 import os
 import random
 import sys
-import discord
-
+#import discord
 
 from People.arvin import Arvin
 from People.jay import Jay
@@ -21,11 +20,9 @@ from People.jeanell import Jeanell
 #from People.arvin import Hat
 
 
-
 # Disable
 def blockPrint():
     sys.stdout = open(os.devnull, 'w')  # There might be a way to do this only using sys not sure
-
 
 # Restore
 def enablePrint():
@@ -35,7 +32,13 @@ def enablePrint():
 class MainFight(object):
     turn = 1
 
-    def __init__(self, teams): #add discord id as a part of this
+    def __init__(self, teams, output): #add discord id as a part of this
+        if random.randint(0, 1) == 0:
+            teams["team1"], teams["team2"] = teams["team2"], teams["team1"]
+
+        self.output = output
+        self.dead = {   "team1" : [],
+                "team2" : []}
         self.teams = teams
         self.p1 = self.teams["team1"][0]
         self.p2 = self.teams["team2"][0]
@@ -44,8 +47,7 @@ class MainFight(object):
             q.team = self.teams["team1"]
             
         for q in self.teams["team2"]:
-            q.team = self.teams["team2"]    
-        
+            q.team = self.teams["team2"]
 
         self.p2.enemy = self.p1
         self.p1.enemy = self.p2
@@ -81,12 +83,12 @@ class MainFight(object):
         if self.p2.hp <= 0:
             self.p2.onDeath()
             if self.p2.hp <= 0:
+                self.dead["team2"].append(self.p2)
                 self.teams["team2"].remove(self.p2)
                 
                 if not self.teams["team2"]:
                     return 1                              
-                
-                                
+
                 print(self.teams["team2"])
                 p2c = -1
                 while int(p2c) not in range(1, len(self.teams["team2"])+1):               
@@ -100,11 +102,11 @@ class MainFight(object):
         if self.p1.hp <= 0:
             self.p1.onDeath()            
             if self.p1.hp <= 0:
+                self.dead["team1"].append(self.p2)
                 self.teams["team1"].remove(self.p1)
                 
                 if not self.teams["team1"]:
                     return 2
-                
                 
                 print(self.teams["team1"])
                 p1c = -1
@@ -124,7 +126,10 @@ class MainFight(object):
 
                   
                 
-    def run(self):     
+    def run(self):
+        if not self.output:
+            blockPrint()
+
         lose = None
 
         while True:
@@ -142,22 +147,22 @@ class MainFight(object):
             
             
             if fuck == 1:
+                lose = self.dead["team2"][0]
                 print("Player 1 wins")
                 break
                 
             if fuck == 2:
+                lose = self.dead["team1"][0]
                 print("Player 2 wins")
                 break
 
             #test if players will dodge or crit
-
             self.p1.testdodged()
             self.p2.testdodged()
             self.p1.testcrit()
             self.p2.testcrit()
 
             # start passives
-
             self.p1.passive()
             self.p2.passive()
 
@@ -178,11 +183,7 @@ class MainFight(object):
                 p2c = input("{}: Can't Swap to Same Character! Select your move ({})".format(self.p2.name,
                                                            "a, s, d#" if self.p2.resource >= self.p2.srec else "a, d#"))
 
-            
-            
             #swaps
-            
-            
             if p1c.lower()[0] == "d" and not self.p1.isParalyzed:
                 choice = int(p1c.lower()[1])
                 
@@ -191,7 +192,6 @@ class MainFight(object):
                 self.p1.swappedin = True
                 self.p1.onSwapIn()
                 print("player 1 swaps")
-                    
           
             if p2c.lower()[0] == "d" and not self.p2.isParalyzed:
                 choice = int(p2c.lower()[1])
@@ -245,20 +245,6 @@ class MainFight(object):
                 self.p2.onSwapIn()
                 print("player 2 is forced to swap")
 
-                    
-            # p1 attacks p2
-            """
-            print("({}) attacks ({})".format(self.p1.name, self.p2.name))
-
-            p1.doescrit = 2 if random.uniform(1, 100) < self.p1.crit else 1
-            self.p2.damage(self.p1.attack, doescrit)
-
-            #p2 attacks p1
-            print("({}) attacks ({})".format(self.p2.name, self.p1.name))
-
-            p2.doescrit = 2 if random.uniform(1, 100) < self.p2.crit else 1
-            self.p1.damage(self.p2.attack, doescrit)
-            """
             # p1 attacks p2
             if not self.p1.swappedin and not self.p1.isParalyzed:
                 print("({}) attacks ({})".format(self.p1.name, self.p2.name))
@@ -290,20 +276,14 @@ class MainFight(object):
             self.turn += 1
             print("\n\n")
 
-        #print("{} loses!".format(lose.name))
-        #print("{} : {}\n{} : {}".format(self.p1.name, self.p1.hp, self.p2.name, self.p2.hp))
-        #enablePrint()
-        #return lose.name
+        enablePrint()
+        return lose.name
 
 if __name__ == "__main__":
     teams = {   "team1" : [Emily(), Phillip(), Sara()],
                 "team2" : [Sean(), Jay(), Peter()]}
-                
-    coinflip = random.randint(0, 1)
-    if coinflip == 0:
-        teams["team1"], teams["team2"] = teams["team2"], teams["team1"]
     
     print(teams)
         
-    game = MainFight(teams)
+    game = MainFight(teams, True)
 
