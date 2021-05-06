@@ -3,7 +3,7 @@ from character import Character
 
 class Jeanell(Character):
     def __init__(self):
-        super().__init__("Jeanell", title="Left The Chat", hp=3000, attack=240, dodge=10, crit=0, defense=40,
+        super().__init__("Jeanell", title="Left The Chat", hp=3000, attack=260, dodge=10, crit=0, defense=40,
                          gender=1, critValue=2)
         self.srec = 11
         self.usedSpecial = False

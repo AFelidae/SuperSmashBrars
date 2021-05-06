@@ -3,7 +3,7 @@ from character import Character
 
 class Rahul(Character):
     def __init__(self):
-        super().__init__("Rahul", title="The Fried Tunak", hp=2000, attack=180, dodge=20, crit=20, defense=30,
+        super().__init__("Rahul", title="The Fried Tunak", hp=1500, attack=160, dodge=40, crit=40, defense=30,
                          gender=0, critValue=2)
         self.srec = 4
     def passive(self):

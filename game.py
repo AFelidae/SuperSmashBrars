@@ -85,11 +85,16 @@ class Fight(object):
             print("Player 2 ({}) HP: {}".format(self.p2.name, self.p2.getHP()))
  
             # death checks
-            if self.p2.getHP() <= 0:
+
+            if self.p1.getHP() <= 0 and self.p2.getHP() <= 0:
+                return "Draw"
+                break
+
+            elif self.p2.getHP() <= 0:
                 lose = self.p2
                 break
 
-            if self.p1.getHP() <= 0:
+            elif self.p1.getHP() <= 0:
                 lose = self.p1
                 break
 
@@ -188,5 +193,5 @@ class Fight(object):
         return lose.name
 
 if __name__ == "__main__":                   
-    game = Fight(Jessica(), Romir(), True)
+    game = Fight(Rahul(), Sean(), True)
 

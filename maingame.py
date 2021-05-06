@@ -1,6 +1,8 @@
 import os
 import random
 import sys
+import discord
+
 
 from People.arvin import Arvin
 from People.jay import Jay
@@ -30,7 +32,7 @@ def enablePrint():
     sys.stdout = sys.__stdout__
 
 
-class Fight(object):
+class MainFight(object):
     turn = 1
 
     def __init__(self, teams): #add discord id as a part of this
@@ -136,6 +138,8 @@ class Fight(object):
             # check for deaths
 
             fuck = self.deathcheck()
+            
+            
             
             if fuck == 1:
                 print("Player 1 wins")
@@ -292,8 +296,8 @@ class Fight(object):
         #return lose.name
 
 if __name__ == "__main__":
-    teams = {   "team1" : [Phillip(), Jiyang(), Peter()],
-                "team2" : [Sean(), Jay(), Arvin()]}
+    teams = {   "team1" : [Emily(), Phillip(), Sara()],
+                "team2" : [Sean(), Jay(), Peter()]}
                 
     coinflip = random.randint(0, 1)
     if coinflip == 0:
@@ -301,5 +305,5 @@ if __name__ == "__main__":
     
     print(teams)
         
-    game = Fight(teams)
+    game = MainFight(teams)
 

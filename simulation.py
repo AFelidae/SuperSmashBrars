@@ -18,9 +18,9 @@ from game import Fight # this triggers a fight from the last line of game.py, un
 gauntlet = {"Arvin": Arvin(), "Sean": Sean(), "Jessica": Jessica(), "Romir": Romir(), "Emily": Emily(), "Jay": Jay(), "Jeanell": Jeanell(), "Kyle": Kyle(), "Rahul": Rahul(), "Jiyang": Jiyang()}
 
 
-d = {"Jiyang" : 0, "Jessica" : 0}  
+d = {"Jeanell" : 0, "Emily" : 0, "Draw" : 0}  
 for _ in range(1000):
-	game = Fight(Jiyang(), Jessica(), False)
+	game = Fight(Jeanell(), Emily(), False)
 	d[game.run()] += 1
 
 print(d)
